@@ -19,6 +19,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PackageRequirementsSettings">
+    <option name="removeUnused" value="true" />
+  </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="b3f828e8-4952-4131-986a-f0e2c07e97c0" />
   </component>
