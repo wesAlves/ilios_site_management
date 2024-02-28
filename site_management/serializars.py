@@ -6,7 +6,6 @@ from .models import AvailableSite
 
 
 class SiteSerializer(serializers.HyperlinkedModelSerializer):
-
     class Meta:
         model = AvailableSite
         fields = [
@@ -18,3 +17,18 @@ class SiteSerializer(serializers.HyperlinkedModelSerializer):
             "desctiption",
             "base_template",
         ]
+
+class PageSerializer(serializers.HyperlinkedModelSerializer):
+    pass
+
+class SectionSerializer(serializers.HyperlinkedModelSerializer):
+    pass
+
+class ContainerSerializer(serializers.HyperlinkedModelSerializer):
+    pass
+
+class ThemeSerializer(serializers.HyperlinkedModelSerializer):
+    pass
+
+class TemplateSerializer(serializers.HyperlinkedModelSerializer):
+    pass
