@@ -35,6 +35,8 @@ class Section(models.Model):
     children = models.ManyToManyField(
         "Container", related_name="sections_children", null=True, blank=True
     )
+    aria = models.CharField(max_length=200, blank=True)
+    
 
 
 class Container(models.Model):
@@ -45,6 +47,7 @@ class Container(models.Model):
     content = models.CharField(max_length=200, blank=True)
     aria = models.CharField(max_length=200, blank=True)
     order = models.IntegerField(default=0)
+    css_classes = models.CharField(max_length=200, blank=True)
 
 
 class Theme(models.Model):
@@ -56,6 +59,3 @@ class Theme(models.Model):
 
 class Template(models.Model):
     name = models.CharField(max_length=200, blank=True)
-    color = models.CharField(max_length=200, blank=True)
-    logo = models.CharField(max_length=200, blank=True)
-    graphisms = models.CharField(max_length=200, blank=True)
