@@ -35,12 +35,22 @@ class SiteManagementView(View):
 class PageView(View):
     def get(self, request, id=None):
 
+        # filters = { "sections_page__id":5}
+        # print(Page.objects.all().filter(sections_page__id=3))
+        # print(filtered_object(Page, filters))
+
         if id != None:
             sections = getting_relate_object(Page, id, "sections_page")
             
             for section in sections:
                 # getting_relate_object(Section, section.id, "")
-                print(section.children.all())
+                # print([content for content in section.children.all()])
+                
+                content = getting_relate_object(Section, section.id, 'children')
+                # print(content)
+                
+                for c in content:
+                    print(c.content)
             
             # print(sections)
             return JsonResponse(detail_oject(Page, id), safe=False)
