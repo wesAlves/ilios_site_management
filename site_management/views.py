@@ -35,25 +35,35 @@ class SiteManagementView(View):
 class PageView(View):
     def get(self, request, id=None):
 
-        # filters = { "sections_page__id":5}
-        # print(Page.objects.all().filter(sections_page__id=3))
-        # print(filtered_object(Page, filters))
-
         if id != None:
+
+            context = {}
+
+            page = detail_oject(Page.objects.get(id=id))
+            # print(page)
+            context['page'] = page['fields']
+
             sections = getting_relate_object(Page, id, "sections_page")
-            
+            context['page']['sections'] = []
+
             for section in sections:
-                # getting_relate_object(Section, section.id, "")
-                # print([content for content in section.children.all()])
+                section_obj = detail_oject(Section.objects.get(id=section.id))
+                # print(section_obj)
+                section_obj["fields"]["children"] = []
                 
-                content = getting_relate_object(Section, section.id, 'children')
-                # print(content)
+                content = getting_relate_object(Section, section.id, "children")
                 
-                for c in content:
-                    print(c.content)
-            
-            # print(sections)
-            return JsonResponse(detail_oject(Page, id), safe=False)
+                for ct in content:
+                    # print(detail_oject(ct))
+                    content_obj = detail_oject(ct)
+                    print(content_obj)
+                    section_obj["fields"]["children"].append(content_obj["fields"])
+
+
+                context['page']['sections'].append(section_obj["fields"])
+            # print(page, sections, content, cx)
+
+            return JsonResponse(context, safe=False)
 
         try:
             pages = Page.objects.all()
@@ -114,17 +124,23 @@ class ContainerView(View):
 #     permissions_classes = [permissions.IsAuthenticated]
 
 
-def detail_oject(model, id):
-    try:
-        object = model.objects.get(id=id)
-        serialazed_object = serialize("json", [object])
+def detail_oject(query_ser):
+    # try:
+    #     object = model.objects.get(id=id)
+    serialazed_object = serialize("json", [query_ser])
 
-        return json.loads(serialazed_object)
-    except:
-        return {}
+    return json.loads(serialazed_object)[0]
+    # except:
+    #     return {}
 
 
 def filtered_object(model: django.db.models.Model, filters) -> django.db.models.Model:
+    """
+    :param model: a django model
+    :param filters: a dict like { "sections_page__id":5, "order":0 ...}
+    :return: a queryset with or without content
+    """
+
     object = model.objects
 
     if len(filters) > 0:
@@ -132,6 +148,12 @@ def filtered_object(model: django.db.models.Model, filters) -> django.db.models.
 
 
 def getting_relate_object(model: django.db.models.Model, id, related_name: str):
+    """
+    :param model: a django model
+    :param id: the instance id
+    :param related_name: someting like: sections_page, children
+    :return: a queryset with or without content
+    """
     object = model.objects.get(id=id)
 
     return object.__getattribute__(related_name).all()
