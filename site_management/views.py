@@ -2,7 +2,9 @@
 
 import json
 
+import django.db.models
 from django.http import JsonResponse, HttpResponse
+from django.urls import reverse
 from django.views.generic import View
 from django.core.serializers import serialize
 
@@ -18,10 +20,11 @@ class SiteManagementView(View):
     def get(self, request, id=None):
 
         if id != None:
-            site = AvailableSite.objects.get(id=id)
-            serialazed_site = serialize("json", [site])
-
-            return JsonResponse(json.loads(serialazed_site), safe=False)
+            DetailOjectView(request, mode=Page, id=id)
+            # site = AvailableSite.objects.get(id=id)
+            # serialazed_site = serialize("json", [site])
+            #
+            # return JsonResponse(json.loads(serialazed_site), safe=False)
 
         sites = AvailableSite.objects.all()
         serialized_sites = serialize("json", sites)
@@ -31,14 +34,16 @@ class SiteManagementView(View):
 
 class PageView(View):
     def get(self, request, id=None):
-        if id != None:
-            try:
-                page = Page.objects.get(id=id)
-                serialazed_page = serialize("json", [page])
 
-                return JsonResponse(json.loads(serialazed_page), safe=False)
-            except:
-                return JsonResponse({}, safe=False)
+        if id != None:
+            sections = getting_relate_object(Page, id, "sections_page")
+            
+            for section in sections:
+                # getting_relate_object(Section, section.id, "")
+                print(section.children.all())
+            
+            # print(sections)
+            return JsonResponse(detail_oject(Page, id), safe=False)
 
         try:
             pages = Page.objects.all()
@@ -97,3 +102,26 @@ class ContainerView(View):
 #     queryset = Template.objects.all().order_by("-id")
 #     serializer_class = TemplateSerializer
 #     permissions_classes = [permissions.IsAuthenticated]
+
+
+def detail_oject(model, id):
+    try:
+        object = model.objects.get(id=id)
+        serialazed_object = serialize("json", [object])
+
+        return json.loads(serialazed_object)
+    except:
+        return {}
+
+
+def filtered_object(model: django.db.models.Model, filters) -> django.db.models.Model:
+    object = model.objects
+
+    if len(filters) > 0:
+        return object.filter(**filters)
+
+
+def getting_relate_object(model: django.db.models.Model, id, related_name: str):
+    object = model.objects.get(id=id)
+
+    return object.__getattribute__(related_name).all()
