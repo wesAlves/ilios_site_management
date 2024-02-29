@@ -26,7 +26,6 @@ class PageSerializer(serializers.ModelSerializer):
             "name",
             "keywords",
             "title",
-            "body",
             "order",
             "templates",
             "domain"

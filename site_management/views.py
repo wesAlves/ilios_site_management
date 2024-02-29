@@ -1,7 +1,7 @@
 """View for managing"""
 
 from rest_framework import permissions, viewsets
-from site_management.serializars import (
+from site_management.serialiazers import (
     SiteSerializer,
     PageSerializer,
     SectionSerializer,

@@ -11,16 +11,21 @@ class AvailableSite(models.Model):
     desctiption = models.CharField(max_length=200, blank=True)
     author = models.CharField(max_length=200, blank=True)
 
+    def __str__(self):
+        return f"{self.name} - {self.domain}"
+
 
 class Page(models.Model):
     name = models.CharField(max_length=200)
     keywords = models.CharField(max_length=200, blank=True)
     viewport = models.CharField(max_length=200, blank=True)
     title = models.CharField(max_length=200, blank=True)
-    body = models.CharField(max_length=200, blank=True)
     order = models.IntegerField(default=0)
     templates = models.CharField(max_length=200, blank=True)
     domain = models.ForeignKey("AvailableSite", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.domain} - {self.name}"
 
 
 class Section(models.Model):
@@ -35,6 +40,9 @@ class Section(models.Model):
     )
     aria = models.CharField(max_length=200, blank=True)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Container(models.Model):
     name = models.CharField(max_length=200, blank=True)
@@ -46,6 +54,9 @@ class Container(models.Model):
     order = models.IntegerField(default=0)
     css_classes = models.CharField(max_length=200, blank=True)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Theme(models.Model):
     name = models.CharField(max_length=200, blank=True)
@@ -53,6 +64,12 @@ class Theme(models.Model):
     logo = models.CharField(max_length=200, blank=True)
     graphisms = models.CharField(max_length=200, blank=True)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Template(models.Model):
     name = models.CharField(max_length=200, blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
