@@ -27,7 +27,7 @@ load_dotenv(BASE_DIR / "ENV/.env")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") == 1
+DEBUG = int(os.environ.get("DEBUG")) == 1
 
 ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOSTS", "*")]
 
@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
-    'django_filters',
+    "django_filters",
     "corsheaders",
     "site_management.apps.SiteManagementConfig",
 ]
@@ -132,10 +131,8 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-CORS_ALLOWED_ORIGINS = [origin for origin in os.environ.get("CORS_ALLOWED_ORIGINS").split(",")]
-CORS_ALLOW_ALL_ORIGINS = os.environ.get("CORS_ALLOW_ALL_ORIGINS") == "1"
-CORS_ALLOW_CREDENTIALS = os.environ.get("CORS_ALLOW_CREDENTIALS") == "1"
-
-REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
-}
+CORS_ALLOWED_ORIGINS = [
+    origin for origin in os.environ.get("CORS_ALLOWED_ORIGINS").split(",")
+]
+CORS_ALLOW_ALL_ORIGINS = int(os.environ.get("CORS_ALLOW_ALL_ORIGINS")) == 1
+CORS_ALLOW_CREDENTIALS = int(os.environ.get("CORS_ALLOW_CREDENTIALS")) == 1
