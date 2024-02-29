@@ -14,15 +14,13 @@ class AvailableSite(models.Model):
 
 class Page(models.Model):
     name = models.CharField(max_length=200)
-    site: models.ForeignKey(
-        "AvailableSite", on_delete=models.CASCADE, null=True, blank=True
-    )
     keywords = models.CharField(max_length=200, blank=True)
     viewport = models.CharField(max_length=200, blank=True)
     title = models.CharField(max_length=200, blank=True)
     body = models.CharField(max_length=200, blank=True)
     order = models.IntegerField(default=0)
     templates = models.CharField(max_length=200, blank=True)
+    domain = models.ForeignKey("AvailableSite", on_delete=models.CASCADE)
 
 
 class Section(models.Model):
@@ -36,7 +34,6 @@ class Section(models.Model):
         "Container", related_name="sections_children", null=True, blank=True
     )
     aria = models.CharField(max_length=200, blank=True)
-    
 
 
 class Container(models.Model):

@@ -5,7 +5,7 @@ from rest_framework import serializers
 from .models import AvailableSite, Page, Section, Container, Theme, Template
 
 
-class SiteSerializer(serializers.HyperlinkedModelSerializer):
+class SiteSerializer(serializers.ModelSerializer):
     class Meta:
         model = AvailableSite
         fields = [
@@ -19,36 +19,38 @@ class SiteSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class PageSerializer(serializers.HyperlinkedModelSerializer):
+class PageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = [
             "name",
-            "site",
-            "keyword",
+            "keywords",
             "title",
             "body",
             "order",
             "templates",
+            "domain"
         ]
+        
 
 
-class SectionSerializer(serializers.HyperlinkedModelSerializer):
+class SectionSerializer(serializers.ModelSerializer):
     class Meta:
-        models = Section
+        model = Section
         fields = [
             "name",
             "order",
-            "css_class",
+            "css_classes",
             "pages",
             "children",
             "aria",
         ]
 
 
-class ContainerSerializer(serializers.HyperlinkedModelSerializer):
+
+class ContainerSerializer(serializers.ModelSerializer):
     class Meta:
-        models = Container
+        model = Container
         fields = [
             "name",
             "type",
@@ -61,13 +63,13 @@ class ContainerSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class ThemeSerializer(serializers.HyperlinkedModelSerializer):
+class ThemeSerializer(serializers.ModelSerializer):
     class Meta:
-        models = Theme
+        model = Theme
         fields = ["name", "color", "logo", "graphisms"]
 
 
-class TemplateSerializer(serializers.HyperlinkedModelSerializer):
+class TemplateSerializer(serializers.ModelSerializer):
     class Meta:
-        models = Template
+        model = Template
         fields = ["name"]
